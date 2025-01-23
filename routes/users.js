@@ -8,6 +8,8 @@ const bodyParser = require("body-parser");
 
 router.use(bodyParser.json({ extended: true }));
 
+
+//route for /users
 router
   .route("/")
   .get((req, res) => {
@@ -33,6 +35,7 @@ router
     } else res.json({ error: "Insufficient Data" });
   });
 
+  //route for specific user using route parameter /:id
 router
   .route("/:id")
   .get((req, res, next) => {

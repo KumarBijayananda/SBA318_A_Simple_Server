@@ -10,6 +10,13 @@ const comments = require("./routes/comments");
 //-----------Middleware-------------------
 app.use(bodyParser.json({ extended: true }));
 
+// middleware to timestamp the request with details of the request
+app.use((req, res, next) => {
+  console.log(`----${Date().toLocaleTimeString()}: Received a ${req.method} request to ${req.url}.`);
+  next();
+});
+
+//route handlers for different data types
 app.use("/users", users);
 app.use("/posts", posts);
 app.use("/comments", comments);
@@ -38,17 +45,28 @@ app.route("/").get((req, res) => {
         rel: "posts",
         type: "POST",
       },
+      {
+        href: "/comments",
+        rel: "comments",
+        type: "GET",
+      },
+      {
+        href: "/comments",
+        rel: "comments",
+        type: "POST",
+      },
     ],
   });
 });
-//------------error handling---------------
+//------------error handling middleware---------------
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({ error: err.message });
 });
 
-app.use((req, res, next) => {
+//if no endpoints are found use this to let the user know
+app.use((req, res) => {
     res.status(404).json({
       error: "Endpoint not found",
       path: req.originalUrl,
@@ -60,3 +78,4 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+

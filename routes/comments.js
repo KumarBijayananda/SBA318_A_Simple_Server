@@ -5,27 +5,6 @@ const bodyParser = require("body-parser");
 
 router.use(bodyParser.json({ extended: true }));
 
-
-const validateId = (idName, idType = 'number') => {
-    return (req, res, next) => {
-      const id = req.params[idName];
-  
-      if (!id) {
-        return res.status(400).json({ error: `${idName} is required.` });
-      }
-  
-      if (idType === 'number' && isNaN(Number(id))) {
-        return res.status(400).json({ error: `${idName} must be a valid number.` });
-      }
-  
-      if (idType === 'string' && typeof id !== 'string') {
-        return res.status(400).json({ error: `${idName} must be a valid string.` });
-      }
-  
-      next();
-    };
-  };
-
 router
   .route("/")
   .get((req, res, next) => {
@@ -53,7 +32,6 @@ router
       } else res.send("No posts with this Id.");
     } else {
       //if neither Ids are present responding with all comments
-      console.log("all comments");
       res.json(comments);
     }
   })
@@ -77,7 +55,7 @@ router
 //-----------------------------------------
 router
   .route("/:id")
-  .get(validateId('id'),(req, res, next) => {
+  .get((req, res, next) => {
     const comment = comments.find((comment) => req.params.id == comment.id);
     if (comment) res.json(comment);
     else next();
