@@ -12,7 +12,12 @@ app.use(bodyParser.json({ extended: true }));
 
 // middleware to timestamp the request with details of the request
 app.use((req, res, next) => {
-  console.log(`----${Date().toLocaleTimeString()}: Received a ${req.method} request to ${req.url}.`);
+  const time = new Date();
+  console.log(
+    `----${time.toLocaleTimeString()}: Received a ${req.method} request to ${
+      req.url
+    }.`
+  );
   next();
 });
 
@@ -23,43 +28,10 @@ app.use("/comments", comments);
 
 //--------------Routes---------------------
 app.route("/").get((req, res) => {
-  res.send({
-    links: [
-      {
-        href: "/users",
-        rel: "users",
-        type: "GET",
-      },
-      {
-        href: "/users",
-        rel: "users",
-        type: "POST",
-      },
-      {
-        href: "/posts",
-        rel: "posts",
-        type: "GET",
-      },
-      {
-        href: "/posts",
-        rel: "posts",
-        type: "POST",
-      },
-      {
-        href: "/comments",
-        rel: "comments",
-        type: "GET",
-      },
-      {
-        href: "/comments",
-        rel: "comments",
-        type: "POST",
-      },
-    ],
-  });
+  res.send("Welcome to homepage");
 });
-//------------error handling middleware---------------
 
+//------------error handling middleware---------------
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({ error: err.message });
@@ -67,15 +39,14 @@ app.use((err, req, res, next) => {
 
 //if no endpoints are found use this to let the user know
 app.use((req, res) => {
-    res.status(404).json({
-      error: "Endpoint not found",
-      path: req.originalUrl,
-      method: req.method,
-    });
+  res.status(404).json({
+    error: "Endpoint not found",
+    path: req.originalUrl,
+    method: req.method,
   });
+});
 
 //--------------Server---------------------
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
-

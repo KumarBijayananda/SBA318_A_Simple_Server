@@ -1,9 +1,13 @@
+//router for all the comments endpoints where user can READ, CREATE, UPDATE, and DELETE comments and 
+// also filter by id.
 const express = require("express");
 const router = express.Router();
 const comments = require("../data/comments");
 const bodyParser = require("body-parser");
 
 router.use(bodyParser.json({ extended: true }));
+
+
 
 router
   .route("/")

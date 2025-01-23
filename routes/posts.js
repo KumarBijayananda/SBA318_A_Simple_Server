@@ -25,7 +25,7 @@ router
           if (element.userId == userId) userPosts.push(element);
         });
         res.json(userPosts);
-      } else res.send("Query not valid");
+      } else res.send("User ID not in range");
     } else res.json(posts);
   })
   .post((req, res) => {
@@ -91,7 +91,7 @@ router.route("/:id/comments").get((req, res, next) => {
           res.json(
             commentsArr.filter((comment) => req.query.userId == comment.userId)
           );
-        } else res.send("There are no comments in this postId");
+        } else res.send("There are no comments in this post by specified user");
       } else res.json(commentsArr);
     } else res.json("There are no comments on this post.");
   });
