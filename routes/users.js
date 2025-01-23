@@ -1,3 +1,6 @@
+//router for all the user endpoints where user can READ, CREATE, UPDATE, and DELETE posts and 
+// also filter by id and filter comments by specified user id
+
 const express = require("express");
 const router = express.Router();
 const users = require("../data/users");
@@ -28,44 +31,59 @@ router
       users.push(user);
       res.json(users[users.length - 1]);
     } else res.json({ error: "Insufficient Data" });
-  })
-  // .patch((req,res)=>{
-  //   const user=users.find(u=>u.id==req.body.id)
-  //   if(user){
+  });
 
-  //   }
-  //   else res.json({error:"User with this id not found"})
-  // })
-  router
+router
   .route("/:id")
-  .get((req,res,next)=>{
+  .get((req, res, next) => {
     const user = users.find((u) => u.id == req.params.id);
     if (user) res.json(user);
     else next();
   })
   .patch((req, res, next) => {
-      const user = users.find((u, i) => {
-        if (u.id == req.params.id) {
-          for (const key in req.body) {
-            users[i][key] = req.body[key];
-          }
-          return true;
+    const user = users.find((u, i) => {
+      if (u.id == req.params.id) {
+        for (const key in req.body) {
+          users[i][key] = req.body[key];
         }
-      });
-  
-      if (user) res.json(user);
-      else next();
-    })
-  .delete((req, res, next) => {
-      const user = users.find((u, i) => {
-        if (u.id == req.params.id) {
-          users.splice(i, 1);
-          return true;
-        }
-      });
-  
-      if (user) res.json(user);
-      else next();
+        return true;
+      }
     });
+
+    if (user) res.json(user);
+    else next();
+  })
+  .delete((req, res, next) => {
+    const user = users.find((u, i) => {
+      if (u.id == req.params.id) {
+        users.splice(i, 1);
+        return true;
+      }
+    });
+
+    if (user) res.json(user);
+    else next();
+  });
+
+// /:id/comments (retrieves all comments by the specific user id)
+// and /:id/comments?postId=<value> (retrieves all comments by the specific user id on the specific post id)
+router.route("/:id/comments").get((req, res, next) => {
+  const commentsArr = comments.filter(
+    (comment) => req.params.id == comment.userId
+  );
+  if (commentsArr.length > 0) {
+    //case for users/:id/comments?postId=<value> by checking if there is postId query
+    if (req.query.postId) {
+      //checking if there are any comments on the comments array by the specified postId
+      if (commentsArr.find((comment) => comment.postId == req.query.postId)) {
+        res.json(
+          commentsArr.filter((comment) => req.query.postId == comment.postId)
+        );
+      } else res.send("There are no comments in this postId");
+    } else {
+      res.json(commentsArr);
+    }
+  } else res.json("There are no comments by this user.");
+});
 
 module.exports = router;
