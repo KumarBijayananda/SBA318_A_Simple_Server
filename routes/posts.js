@@ -19,6 +19,7 @@ router
       const userId = parseInt(req.query.userId);
       const userPosts = [];
       let maxId = 0;
+      //using loop to find max Id number
       users.forEach((element) => {
         if (element.id > maxId) maxId = element.id;
       });
@@ -28,9 +29,10 @@ router
           if (element.userId == userId) userPosts.push(element);
         });
         res.json(userPosts);
-      } else res.send("User ID not is not found");
+      } else res.send("User ID is not found");
     } else res.json(posts);
   })
+  //creating a new post
   .post((req, res) => {
     if (req.body.userId && req.body.title && req.body.content) {
       const post = {
@@ -50,9 +52,11 @@ router
   .route("/:id")
   .get((req, res, next) => {
     const post = posts.find((p) => p.id == req.params.id);
+    //checking if the specified post by the Id exists
     if (post) res.json(post);
     else next();
   })
+  //updating the specified post by the Id
   .patch((req, res, next) => {
     const post = posts.find((p, i) => {
       if (p.id == req.params.id) {
@@ -62,10 +66,10 @@ router
         return true;
       }
     });
-    console.log(post);
     if (post) res.json(post);
     else next();
   })
+  //deleting the specified post by the Id
   .delete((req, res, next) => {
     const post = posts.find((p, i) => {
       if (p.id == req.params.id) {
