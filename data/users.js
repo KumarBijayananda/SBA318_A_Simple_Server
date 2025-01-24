@@ -1,3 +1,4 @@
+//Array of objects to hold the user data where user is an object.
 const users = [
     {
       id: 1,

@@ -4,6 +4,7 @@
 const express = require("express");
 const router = express.Router();
 const users = require("../data/users");
+const comments=require("../data/comments")
 const bodyParser = require("body-parser");
 
 router.use(bodyParser.json({ extended: true }));
@@ -12,13 +13,16 @@ router.use(bodyParser.json({ extended: true }));
 //route for /users
 router
   .route("/")
+  //retrieve all users
   .get((req, res) => {
     res.json(users);
   })
+  //create a user
   .post((req, res) => {
+    //check if the name, username and email exists
     if (req.body.name && req.body.username && req.body.email) {
+      //check if the username is already taken so they can be unique
       if (users.find((u) => u.username == req.body.username)) {
-        // res.json({error: "Username Already Taken"});
         throw new Error("Username Already Taken");
         return;
       }
@@ -32,7 +36,7 @@ router
 
       users.push(user);
       res.json(users[users.length - 1]);
-    } else res.json({ error: "Insufficient Data" });
+    } else throw new Error("Insufficient Data");
   });
 
   //route for specific user using route parameter /:id
@@ -70,7 +74,9 @@ router
 
 // /:id/comments (retrieves all comments by the specific user id)
 // and /:id/comments?postId=<value> (retrieves all comments by the specific user id on the specific post id)
-router.route("/:id/comments").get((req, res, next) => {
+router
+.route("/:id/comments")
+.get((req, res, next) => {
   const commentsArr = comments.filter(
     (comment) => req.params.id == comment.userId
   );
@@ -82,11 +88,11 @@ router.route("/:id/comments").get((req, res, next) => {
         res.json(
           commentsArr.filter((comment) => req.query.postId == comment.postId)
         );
-      } else res.send("There are no comments in this postId");
+      } else throw new Error("There are no comments in this postId");
     } else {
       res.json(commentsArr);
     }
-  } else res.json("There are no comments by this user.");
+  } else throw new Error("There are no comments by this user.");
 });
 
 module.exports = router;

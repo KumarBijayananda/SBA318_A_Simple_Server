@@ -44,14 +44,14 @@ create a new comment with POST method
 http://localhost:3000/comments/:id  - finds the comment with specified ID with GET method, or can update
 the comment information with PATCH method and finally can delete a comment with DELETE method.
 
-http://localhost:3000/users/:id/comments - retrieves all comments by the specified user ID 
+http://localhost:3000/users/:id/comments - retrieves all comments by the specified user ID with GET method
 
-http://localhost:3000/users/:id/comments?postId=<value>   - retrieves all comments by the specified 
-user id on the specific post id.
+http://localhost:3000/users/:id/comments?postId=<value>   - retrieves all comments by specified 
+user id on the specific post id with the GET method
 
-http://localhost:3000/posts/:id/comments - retrieves all comments by the specified post ID.
+http://localhost:3000/posts/:id/comments - retrieves all comments by the specified post ID with GET method.
 
 http://localhost:3000/posts/:id/comments?userId=<value>   - retrieves all comments on the specified 
-post id by the specific user id.
+post id by the specific user id with GET method
 
 

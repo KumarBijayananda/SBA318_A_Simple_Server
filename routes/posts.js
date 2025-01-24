@@ -3,6 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const posts = require("../data/posts");
+const comments = require("../data/comments")
 const bodyParser = require("body-parser");
 
 router.use(bodyParser.json({ extended: true }));

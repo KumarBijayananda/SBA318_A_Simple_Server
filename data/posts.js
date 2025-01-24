@@ -1,3 +1,4 @@
+//Array of objects to hold the post data where post is an object.
 const posts = [
     {
       id: 1,

@@ -3,6 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const comments = require("../data/comments");
+const posts = require("../data/posts")
 const bodyParser = require("body-parser");
 
 router.use(bodyParser.json({ extended: true }));
@@ -12,9 +13,10 @@ router.use(bodyParser.json({ extended: true }));
 router
   .route("/")
   .get((req, res, next) => {
+    //checking if there is userId
     if (req.query.userId) {
-      //checking if there is userId
-
+      
+      //checking if the userId exists
       if (req.query.userId > 0 && req.query.userId <= users.length) {
         const commentsArr = comments.filter(
           (comment) => comment.userId == req.query.userId
@@ -23,15 +25,16 @@ router
           res.json(commentsArr);
         } else res.send("No comments from this user.");
       } else res.send("No User with this Id.");
+      //if there is postId
     } else if (req.query.postId) {
       if (
-        //checking if there is postId
+        //checking if the postId exists
         req.query.postId > 0 &&
         req.query.postId < posts[posts.length - 1].id
       ) {
-        const postsArr = posts.filter((post) => post.id == req.query.postId);
-        if (postsArr.length > 0) {
-          res.json(postsArr);
+        const commentsArr = comments.filter((comment) => comment.postId == req.query.postId);
+        if (commentsArr.length > 0) {
+          res.json(commentsArr);
         } else res.send("No posts with this Id.");
       } else res.send("No posts with this Id.");
     } else {
@@ -40,11 +43,7 @@ router
     }
   })
   .post((req, res) => {
-    if (
-      users.find((i) => i.id == req.body.userId) &&
-      posts.find((i) => i.id == req.body.postId) &&
-      req.body.body
-    ) {
+    if (req.body.userId && req.body.postId && req.body.body) {
       const comment = {
         id: comments[comments.length - 1].id + 1,
         userId: req.body.userId,
