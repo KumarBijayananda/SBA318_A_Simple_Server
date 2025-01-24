@@ -1,4 +1,4 @@
-//router for all the user endpoints where user can READ, CREATE, UPDATE, and DELETE posts and 
+//router for all the user endpoints where user can READ, CREATE, UPDATE, and DELETE user and 
 // also filter by id and filter comments by specified user id
 
 const express = require("express");

@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const comments = require("../data/comments");
 const posts = require("../data/posts")
+const users = require("../data/users")
 const bodyParser = require("body-parser");
 
 router.use(bodyParser.json({ extended: true }));
@@ -17,7 +18,7 @@ router
     if (req.query.userId) {
       
       //checking if the userId exists
-      if (req.query.userId > 0 && req.query.userId <= users.length) {
+      if (req.query.userId > 0 && req.query.userId <= users[users.length-1].id) {
         const commentsArr = comments.filter(
           (comment) => comment.userId == req.query.userId
         );

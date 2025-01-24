@@ -23,7 +23,7 @@ const users = [
         name: "Sara",
         username: "glaucodermaphobic",
         email: "sara@example.com",
-      },
+    },
   ];
 
   module.exports = users;

@@ -3,6 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const posts = require("../data/posts");
+const users = require("../data/users")
 const comments = require("../data/comments")
 const bodyParser = require("body-parser");
 
@@ -13,6 +14,7 @@ router.use(bodyParser.json({ extended: true }));
 router
   .route("/")
   .get((req, res) => {
+    //checking if the userId query exists
     if (req.query.userId) {
       const userId = parseInt(req.query.userId);
       const userPosts = [];
@@ -20,13 +22,13 @@ router
       users.forEach((element) => {
         if (element.id > maxId) maxId = element.id;
       });
-
+      //if user Id exists in the users array
       if (userId > 0 && userId <= maxId) {
         posts.forEach((element) => {
           if (element.userId == userId) userPosts.push(element);
         });
         res.json(userPosts);
-      } else res.send("User ID not in range");
+      } else res.send("User ID not is not found");
     } else res.json(posts);
   })
   .post((req, res) => {

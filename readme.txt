@@ -35,11 +35,20 @@ the user information with PATCH method and finally can delete a user with DELETE
 http://localhost:3000/posts  - this retrives all the posts in the system with GET method or can
 create a new post with POST method
 
+http://localhost:3000/posts?userId=<value>  - this retrives all the posts by specified user Id
+using the GET method.
+
 http://localhost:3000/users/:id  - finds the post with specified ID with GET method, or can update
 the post information with PATCH method and finally can delete a post with DELETE method.
 
 http://localhost:3000/comments  - this retrives all the comments in the system with GET method or can
 create a new comment with POST method
+
+http://localhost:3000/comments?userId=<value>  - this retrives all the comments specified by the 
+user Id.
+
+http://localhost:3000/comments?postId=<value>  - this retrives all the comments made on the specified 
+post Id.
 
 http://localhost:3000/comments/:id  - finds the comment with specified ID with GET method, or can update
 the comment information with PATCH method and finally can delete a comment with DELETE method.
